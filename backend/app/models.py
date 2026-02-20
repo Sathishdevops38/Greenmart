@@ -1,8 +1,22 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Text
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Text, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
 from .database import Base
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(200), unique=True, nullable=False, index=True)
+    hashed_password = Column(String(255), nullable=False)
+    full_name = Column(String(200), nullable=False)
+    role = Column(String(20), default="buyer")  # "buyer" or "seller"
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    products = relationship("Product", back_populates="seller")
 
 
 class Category(Base):
@@ -23,10 +37,12 @@ class Product(Base):
     price = Column(Float, nullable=False)
     image_url = Column(String(500), nullable=True)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)
+    seller_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     stock = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     category = relationship("Category", back_populates="products")
+    seller = relationship("User", back_populates="products")
     order_items = relationship("OrderItem", back_populates="product")
 
 

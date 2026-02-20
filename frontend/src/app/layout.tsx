@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/components/CartProvider";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
@@ -16,10 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen antialiased">
-        <CartProvider>
-          <Header />
-          <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Header />
+            <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

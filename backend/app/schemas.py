@@ -1,6 +1,37 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import datetime
+
+
+class UserBase(BaseModel):
+    email: EmailStr
+    full_name: str
+    role: str = "buyer"
+
+
+class UserCreate(UserBase):
+    password: str
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    email: str
+    full_name: str
+    role: str
+
+    class Config:
+        from_attributes = True
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
 
 
 class CategoryBase(BaseModel):
@@ -43,6 +74,7 @@ class ProductUpdate(BaseModel):
 
 class Product(ProductBase):
     id: int
+    seller_id: Optional[int] = None
     created_at: Optional[datetime] = None
 
     class Config:
