@@ -11,7 +11,18 @@ def seed():
     db = SessionLocal()
 
     if db.query(Category).first():
-        print("Database already seeded.")
+        # Fix broken image URLs in existing DB (Unsplash 404 or unreliable)
+        FIXED_IMAGE = "https://picsum.photos/seed/greenmart/400/400"
+        broken_url_patterns = [
+            "photo-1593691509543-c55fb32d8de9",  # 404
+        ]
+        for p in db.query(Product).all():
+            url = p.image_url or ""
+            is_broken = any(pat in url for pat in broken_url_patterns)
+            if is_broken or (p.name == "rose plant" and "unsplash" in url):
+                p.image_url = FIXED_IMAGE
+        db.commit()
+        print("Database already seeded. Fixed broken image URLs.")
         db.close()
         return
 
@@ -42,10 +53,10 @@ def seed():
             stock=20,
         ),
         Product(
-            name="Peace Lily",
-            description="Elegant white blooms and glossy leaves. Great for improving air quality.",
+            name="rose plant",
+            description="Beautiful rose plant with fragrant blooms. Perfect for gardens and gifting.",
             price=34.99,
-            image_url="https://images.unsplash.com/photo-1545231087-4b72e0e78d7b?w=400",
+            image_url="https://picsum.photos/seed/roseplant/400/400",
             category_id=categories[0].id,
             stock=12,
         ),
