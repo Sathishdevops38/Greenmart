@@ -56,17 +56,19 @@ d:\Greenmart\
 
 ## Features
 
-- Product catalog with categories (Plants, Flowers, Seeds)
-- Product detail pages
+- **User signup & login** – Create an account as a buyer or seller (JWT auth)
+- **Product catalog** – Browse plants, flowers, and seeds by category
+- **Seller dashboard** – Sellers can add, edit, and delete their own products
 - Shopping cart (localStorage)
 - Checkout and order placement
-- Admin panel to view products and orders
+- Admin panel to view all products and orders
 
 ## Adding Products
 
-1. Use the admin panel at `/admin` (read-only in current build), or
-2. Edit `backend/seed.py` and run `python seed.py` (will skip if data exists), or
-3. Use the FastAPI docs at http://localhost:8000/docs to POST to `/admin/products`
+1. **As a seller**: Sign up with role "Sell plants & seeds", then go to **Sell** → **My Products** to add products
+2. Use the admin panel at `/admin`, or
+3. Edit `backend/seed.py` and run `python seed.py` (will skip if data exists), or
+4. Use the FastAPI docs at http://localhost:8000/docs to POST to `/admin/products` or `/seller/products` (with Bearer token)
 
 ## Environment
 
