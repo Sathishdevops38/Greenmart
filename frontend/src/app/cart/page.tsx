@@ -1,11 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/components/CartProvider";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
+
+  const fallbackElement = (
+    <div className="w-full h-full flex items-center justify-center text-2xl">
+      🌱
+    </div>
+  );
 
   if (items.length === 0) {
     return (
@@ -32,16 +38,15 @@ export default function CartPage() {
           >
             <div className="w-20 h-20 relative bg-primary-50 rounded-lg overflow-hidden flex-shrink-0">
               {item.image_url ? (
-                <Image
+                <ImageWithFallback
                   src={item.image_url}
                   alt={item.name}
                   fill
                   className="object-cover"
+                  fallbackElement={fallbackElement}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-2xl">
-                  🌱
-                </div>
+                fallbackElement
               )}
             </div>
             <div className="flex-1 min-w-0">
