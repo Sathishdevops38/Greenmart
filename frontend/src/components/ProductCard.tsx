@@ -1,29 +1,34 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "./CartProvider";
+import ImageWithFallback from "./ImageWithFallback";
 import type { Product } from "@/lib/api";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+
+  const fallbackElement = (
+    <div className="w-full h-full flex items-center justify-center text-primary-400 text-4xl">
+      🌱
+    </div>
+  );
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden border border-primary-200 hover:border-primary-500 hover:shadow-lg transition">
       <Link href={`/products/${product.id}`}>
         <div className="aspect-square relative bg-primary-50">
           {product.image_url ? (
-            <Image
+            <ImageWithFallback
               src={product.image_url}
               alt={product.name}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 300px"
+              fallbackElement={fallbackElement}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-primary-400 text-4xl">
-              🌱
-            </div>
+            fallbackElement
           )}
         </div>
       </Link>
