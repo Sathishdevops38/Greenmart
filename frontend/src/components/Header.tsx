@@ -33,6 +33,9 @@ export default function Header() {
                   <Link href="/admin" className="hover:text-primary-200 transition">
                     Admin
                   </Link>
+                  <span className="text-primary-200 font-medium">
+                    Hello, {user.full_name}
+                  </span>
                   <button
                     onClick={logout}
                     className="hover:text-primary-200 transition"
